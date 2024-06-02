@@ -12,14 +12,14 @@ class PersonRepository
         return Person::all();
     }
 
-    public function create(Request $request): Person
+    public function create(array $request): Person
     {
-        return Person::create($request->all());
+        return Person::create($request);
     }
 
-    public function update(Request $request, Person $person): Person
+    public function update(array $request, Person $person): Person
     {
-        $person->update($request->all());
+        $person->update($request);
         return $person;
     }
 

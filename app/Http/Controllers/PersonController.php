@@ -27,7 +27,7 @@ class PersonController extends Controller
 
     public function store(PersonRequest $request): JsonResponse
     {
-        $person = $this->personRepository->create($request);
+        $person = $this->personRepository->create($request->all());
         return response()->json($person, Response::HTTP_CREATED);
     }
 
@@ -38,7 +38,7 @@ class PersonController extends Controller
 
     public function update(PersonRequest $request, Person $person): JsonResponse
     {
-        $person = $this->personRepository->update($request, $person);
+        $person = $this->personRepository->update($request->all(), $person);
         return response()->json($person);
     }
 
