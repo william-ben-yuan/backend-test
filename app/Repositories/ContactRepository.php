@@ -14,9 +14,9 @@ class ContactRepository
         return $person->contacts;
     }
 
-    public function create(Request $request, Person $person): Contact
+    public function create(array $request, Person $person): Contact
     {
-        $contact = new Contact($request->all());
+        $contact = new Contact($request);
         $person->contacts()->save($contact);
         return $contact;
     }
@@ -26,9 +26,9 @@ class ContactRepository
         return Contact::find($id);
     }
 
-    public function update(Request $request, Contact $contact): Contact
+    public function update(array $request, Contact $contact): Contact
     {
-        $contact->update($request->all());
+        $contact->update($request);
         return $contact;
     }
 

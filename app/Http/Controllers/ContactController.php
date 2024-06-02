@@ -7,7 +7,6 @@ use App\Models\Contact;
 use App\Models\Person;
 use App\Repositories\ContactRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ContactController extends Controller
@@ -27,14 +26,14 @@ class ContactController extends Controller
 
     public function store(ContactRequest $request, Person $person): JsonResponse
     {
-        $contact = $this->contactRepository->create($request, $person);
+        $contact = $this->contactRepository->create($request->all(), $person);
         return response()->json($contact, Response::HTTP_CREATED);
     }
 
-    public function update(ContactRequest $request, Contact $contact)
+    public function update(ContactRequest $request, Contact $contact): JsonResponse
     {
-        $contact = $this->contactRepository->update($request, $contact);
-        return $contact;
+        $contact = $this->contactRepository->update($request->all(), $contact);
+        return response()->json($contact, Response::HTTP_OK);
     }
 
     public function destroy(Contact $contact)
