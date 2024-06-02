@@ -13,9 +13,6 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id')->constrained('people');
-            $table->enum('type', ['telefone', 'email', 'whatsapp']); 
-            $table->string('contact');
             $table->timestamps();
         });
     }
