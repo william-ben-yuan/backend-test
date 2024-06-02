@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PersonRequest;
 use App\Models\Person;
 use App\Repositories\PersonRepository;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +25,7 @@ class PersonController extends Controller
         return response()->json($persons);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(PersonRequest $request): JsonResponse
     {
         $person = $this->personRepository->create($request);
         return response()->json($person, Response::HTTP_CREATED);
@@ -35,7 +36,7 @@ class PersonController extends Controller
         return response()->json($person->load('contacts'));
     }
 
-    public function update(Request $request, Person $person): JsonResponse
+    public function update(PersonRequest $request, Person $person): JsonResponse
     {
         $person = $this->personRepository->update($request, $person);
         return response()->json($person);

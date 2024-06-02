@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use App\Models\Person;
 use App\Repositories\ContactRepository;
@@ -24,13 +25,13 @@ class ContactController extends Controller
         return response()->json($contacts);
     }
 
-    public function store(Request $request, Person $person): JsonResponse
+    public function store(ContactRequest $request, Person $person): JsonResponse
     {
         $contact = $this->contactRepository->create($request, $person);
         return response()->json($contact, Response::HTTP_CREATED);
     }
 
-    public function update(Request $request, Contact $contact)
+    public function update(ContactRequest $request, Contact $contact)
     {
         $contact = $this->contactRepository->update($request, $contact);
         return $contact;
