@@ -44,14 +44,25 @@ class ContactControllerTest extends TestCase
     public function testStore()
     {
         $person = Person::factory()->create();
-        $contact = Contact::factory()->make();
+        $contact = Contact::factory()->make()->toArray();
+        unset($contact['person_id']);
 
-        $response = $this->post("/api/people/{$person->id}/contacts", $contact->toArray());
+        $response = $this->post("/api/people/{$person->id}/contacts", $contact);
 
         $response->assertStatus(Response::HTTP_CREATED);
-        $response->assertJsonFragment([
-            'person_id' => $person->id,
-            'type' => $contact->type,
+        $this->assertDatabaseHas('contacts', $contact);
+    }
+
+    public function testShow()
+    {
+        $contact = Contact::factory()->create();
+
+        $response = $this->get("/api/contacts/{$contact->id}");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'person_id' => $contact->person_id,
+            'type' => $contact->type->value,
             'contact' => $contact->contact,
         ]);
     }
@@ -59,17 +70,13 @@ class ContactControllerTest extends TestCase
     public function testUpdate()
     {
         $contact = Contact::factory()->create();
-        $newContact = Contact::factory()->make();
-        unset($newContact->person_id);
+        $newContact = Contact::factory()->make()->toArray();
+        unset($newContact['person_id']);
 
-        $response = $this->put("/api/contacts/{$contact->id}", $newContact->toArray());
+        $response = $this->put("/api/contacts/{$contact->id}", $newContact);
 
         $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonFragment([
-            'person_id' => $contact->person_id,
-            'type' => $newContact->type,
-            'contact' => $newContact->contact,
-        ]);
+        $this->assertDatabaseHas('contacts', $newContact);
     }
 
     public function testDestroy()

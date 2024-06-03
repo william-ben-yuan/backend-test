@@ -24,6 +24,11 @@ class ContactController extends Controller
         return response()->json($contacts);
     }
 
+    public function show(Contact $contact): JsonResponse
+    {
+        return response()->json($contact);
+    }
+
     public function store(ContactRequest $request, Person $person): JsonResponse
     {
         $contact = $this->contactRepository->create($request->all(), $person);
